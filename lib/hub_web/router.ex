@@ -24,6 +24,6 @@ defmodule HubWeb.Router do
     pipe_through :api
 
     resources "/questions", QuestionController, except: [:new, :edit]
-    # resources "/answers", QuestionController, except: [:new, :edit]
+    resources "/answers", AnswerController, except: [:new, :edit]
   end
 end
