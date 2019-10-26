@@ -3,7 +3,6 @@ defmodule Hub.QA.Profile do
 
   import Ecto.Changeset
 
-  alias Hub.QA.Profile
 
   schema "profiles" do
     field :name, :string
@@ -12,6 +11,7 @@ defmodule Hub.QA.Profile do
     field :bio, :string
     field :userId, :string
 
+    timestamps()
   end
 
     @doc false
