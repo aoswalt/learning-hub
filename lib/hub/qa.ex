@@ -7,6 +7,7 @@ defmodule Hub.QA do
   alias Hub.Repo
 
   alias Hub.QA.Question
+  alias Hub.QA.Answer
 
   @doc """
   Returns the list of questions.
@@ -19,6 +20,10 @@ defmodule Hub.QA do
   """
   def list_questions do
     Repo.all(Question)
+  end
+
+  def list_answers do
+    Repo.all(Answer)
   end
 
   @doc """
@@ -36,6 +41,13 @@ defmodule Hub.QA do
 
   """
   def get_question!(id), do: Repo.get!(Question, id)
+  def get_answer!(id), do: Repo.get!(Answer, id)
+
+  def get_answers(id) do
+    Answer
+    |> where([a], a.question_id == ^id)
+    |> Repo.all()
+  end
 
   @doc """
   Creates a question.
@@ -52,6 +64,12 @@ defmodule Hub.QA do
   def create_question(attrs \\ %{}) do
     %Question{}
     |> Question.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_answer(attrs \\ %{}) do
+    %Answer{}
+    |> Answer.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -73,6 +91,12 @@ defmodule Hub.QA do
     |> Repo.update()
   end
 
+  def update_answer(%Answer{} = answer, attrs) do
+    answer
+    |> Answer.changeset(attrs)
+    |> Repo.update()
+  end
+
   @doc """
   Deletes a Question.
 
@@ -89,6 +113,10 @@ defmodule Hub.QA do
     Repo.delete(question)
   end
 
+  def delete_answer(%Answer{} = answer) do
+    Repo.delete(answer)
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking question changes.
 
@@ -100,5 +128,9 @@ defmodule Hub.QA do
   """
   def change_question(%Question{} = question) do
     Question.changeset(question, %{})
+  end
+
+  def change_answer(%Answer{} = answer) do
+    Answer.changeset(answer, %{})
   end
 end

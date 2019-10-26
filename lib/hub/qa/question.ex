@@ -10,6 +10,7 @@ defmodule Hub.QA.Question do
     field :text, :string
     field :created_by, :string
     belongs_to :solution, Answer
+    has_many :answers, Answer
 
     timestamps()
   end
