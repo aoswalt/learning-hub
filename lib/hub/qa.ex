@@ -114,25 +114,25 @@ defmodule Hub.QA do
   # answer calls
   #
 
-  def get_answer!(id) do
-    Repo.get!(Answer, id)
-  end
+  # def get_answer!(id) do
+  #   Repo.get!(Answer, id)
+  # end
 
-  def create_answer(attrs \\ %{}) do
-    %Answer{}
-    |> Answer.changeset(attrs)
-    |> Repo.insert()
-  end
+  # def create_answer(attrs \\ %{}) do
+  #   %Answer{}
+  #   |> Answer.changeset(attrs)
+  #   |> Repo.insert()
+  # end
 
-  def delete_answer(%Answer{} = answer) do
-    Repo.delete(answer)
-  end
+  # def delete_answer(%Answer{} = answer) do
+  #   Repo.delete(answer)
+  # end
   
-  def update_answer(%Answer{} = answer, attrs) do
-    answer
-    |> Answer.changeset(attrs)
-    |> Repo.update()
-  end
+  # def update_answer(%Answer{} = answer, attrs) do
+  #   answer
+  #   |> Answer.changeset(attrs)
+  #   |> Repo.update()
+  # end
 
   # 
   # end answer calls
@@ -142,29 +142,29 @@ defmodule Hub.QA do
   # profile calls
   #
 
-  def list_profile do
-    Repo.all(Profile)
-  end
+  # def list_profile do
+  #   Repo.all(Profile)
+  # end
 
-  def get_profile!(id) do
-    Repo.get!(Profile, id)
-  end
+  # def get_profile!(id) do
+  #   Repo.get!(Profile, id)
+  # end
 
-  def create_profile(attrs \\ %{}) do
-    %Profile{}
-    |> Profile.changeset(attrs)
-    |> Repo.insert()
-  end
+  # def create_profile(attrs \\ %{}) do
+  #   %Profile{}
+  #   |> Profile.changeset(attrs)
+  #   |> Repo.insert()
+  # end
 
-  def delete_profile(%Profile{} = profile) do
-    Repo.delete(profile)
-  end
+  # def delete_profile(%Profile{} = profile) do
+  #   Repo.delete(profile)
+  # end
   
-  def update_profile(%Profile{} = profile, attrs) do
-    profile
-    |> Profile.changeset(attrs)
-    |> Repo.update()
-  end
+  # def update_profile(%Profile{} = profile, attrs) do
+  #   profile
+  #   |> Profile.changeset(attrs)
+  #   |> Repo.update()
+  # end
 
   # 
   # end profile calls
