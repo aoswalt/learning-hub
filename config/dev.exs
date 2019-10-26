@@ -3,7 +3,7 @@ use Mix.Config
 # Configure your database
 config :hub, Hub.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "5dontmess",
   database: "hub_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
