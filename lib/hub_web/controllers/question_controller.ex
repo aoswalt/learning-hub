@@ -11,7 +11,7 @@ defmodule HubWeb.QuestionController do
     render(conn, "index.json", questions: questions)
   end
 
-  def create(conn, %{"question" => question_params}) do
+  def create(conn, question_params) do
     with {:ok, %Question{} = question} <- QA.create_question(question_params) do
       conn
       |> put_status(:created)
@@ -25,7 +25,7 @@ defmodule HubWeb.QuestionController do
     render(conn, "show.json", question: question)
   end
 
-  def update(conn, %{"id" => id, "question" => question_params}) do
+  def update(conn, %{"id" => id} = question_params) do
     question = QA.get_question!(id)
 
     with {:ok, %Question{} = question} <- QA.update_question(question, question_params) do

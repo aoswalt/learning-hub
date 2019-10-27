@@ -19,7 +19,7 @@ defmodule HubWeb.AnswerController do
     render(conn, "index.json", answers: answers)
   end
 
-  def create(conn, %{"answer" => answer_params}) do
+  def create(conn, answer_params) do
     with {:ok, %Answer{} = answer} <- QA.create_answer(answer_params) do
       conn
       |> put_status(:created)
@@ -33,7 +33,7 @@ defmodule HubWeb.AnswerController do
     render(conn, "show.json", answer: answer)
   end
 
-  def update(conn, %{"id" => id, "answer" => answer_params}) do
+  def update(conn, %{"id" => id} = answer_params) do
     answer = QA.get_answer!(id)
 
     with {:ok, %Answer{} = answer} <- QA.update_answer(answer, answer_params) do

@@ -11,7 +11,7 @@ defmodule HubWeb.ProfileController do
     render(conn, "index.json", profiles: profiles)
   end
 
-  def create(conn, %{"profile" => profile_params}) do
+  def create(conn, profile_params) do
     with {:ok, %Profile{} = profile} <- QA.create_profile(profile_params) do
       conn
       |> put_status(:created)
@@ -25,7 +25,7 @@ defmodule HubWeb.ProfileController do
     render(conn, "show.json", profile: profile)
   end
 
-  def update(conn, %{"id" => id, "profile" => profile_params}) do
+  def update(conn, %{"id" => id} = profile_params) do
     profile = QA.get_profile!(id)
 
     with {:ok, %profile{} = profile} <- QA.update_profile(profile, profile_params) do
