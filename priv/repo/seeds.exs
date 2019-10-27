@@ -25,7 +25,7 @@
 
 {:ok, %{id: g}} =  %Hub.QA.Question{} |> Hub.QA.Question.changeset(%{text: "Wtf is a hook", created_at: "2019-10-25", created_by: a, tags: ["react", "javascript"]}) |> Hub.Repo.insert()
 
-{:ok, %{id: h}} =  %Hub.QA.Question{} |> Hub.QA.Question.changeset(%{text: "Help, I injected SQL into my veins", created_at: "2019-09-24", created_by: a, tags: ["c#, sql"]}) |> Hub.Repo.insert()
+{:ok, %{id: h}} =  %Hub.QA.Question{} |> Hub.QA.Question.changeset(%{text: "Help, I injected SQL into my veins", created_at: "2019-09-24", created_by: a, tags: ["c#", "sql"]}) |> Hub.Repo.insert()
 
 {:ok, %{id: j}} =  %Hub.QA.Question{} |> Hub.QA.Question.changeset(%{text: "If postgres doesn't work with docker someone might have to die.", created_at: "2018-07-13", created_by: d, tags: ["postgresql"]}) |> Hub.Repo.insert()
 
