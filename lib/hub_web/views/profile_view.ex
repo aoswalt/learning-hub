@@ -16,6 +16,6 @@ defmodule HubWeb.ProfileView do
       cohort: profile.cohort,
       tags: profile.tags,
       bio: profile.bio,
-      userId: profile.userId}
+      userId: profile.user_id}
   end
 end
