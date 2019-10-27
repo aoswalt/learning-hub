@@ -1,4 +1,4 @@
-defmodule Hub.QA.Profile do
+defmodule Hub.Profile do
   use Ecto.Schema
 
   import Ecto.Changeset

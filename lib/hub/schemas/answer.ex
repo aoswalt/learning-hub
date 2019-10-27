@@ -1,9 +1,9 @@
-defmodule Hub.QA.Answer do
+defmodule Hub.Answer do
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  alias Hub.QA.Question
+  alias Hub.Question
 
   schema "answers" do
     field :text, :string

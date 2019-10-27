@@ -1,9 +1,9 @@
-defmodule Hub.QA.Question do
+defmodule Hub.Question do
   use Ecto.Schema
 
   import Ecto.{Changeset, Query}
 
-  alias Hub.QA.Answer
+  alias Hub.Answer
   alias __MODULE__
 
   schema "questions" do
