@@ -25,6 +25,6 @@ defmodule HubWeb.Router do
 
     resources "/questions", QuestionController, except: [:new, :edit]
     resources "/profiles", ProfileController, except: [:new, :edit]
-    # resources "/answers", QuestionController, except: [:new, :edit]
+    resources "/answers", AnswerController, except: [:new, :edit]
   end
 end

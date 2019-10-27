@@ -23,10 +23,8 @@ defmodule Hub.QA do
     Repo.all(Question)
   end
 
-  def list_questions2 do
-    from(q in Question, 
-      where: q.id in [1, 2, 3])
-      |> Repo.all()
+  def list_answers do
+    Repo.all(Answer)
   end
 
   @doc """
@@ -44,6 +42,13 @@ defmodule Hub.QA do
 
   """
   def get_question!(id), do: Repo.get!(Question, id)
+  def get_answer!(id), do: Repo.get!(Answer, id)
+
+  def get_answers(id) do
+    Answer
+    |> where([a], a.question_id == ^id)
+    |> Repo.all()
+  end
 
   @doc """
   Creates a question.
@@ -60,6 +65,12 @@ defmodule Hub.QA do
   def create_question(attrs \\ %{}) do
     %Question{}
     |> Question.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_answer(attrs \\ %{}) do
+    %Answer{}
+    |> Answer.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -81,6 +92,12 @@ defmodule Hub.QA do
     |> Repo.update()
   end
 
+  def update_answer(%Answer{} = answer, attrs) do
+    answer
+    |> Answer.changeset(attrs)
+    |> Repo.update()
+  end
+
   @doc """
   Deletes a Question.
 
@@ -97,6 +114,10 @@ defmodule Hub.QA do
     Repo.delete(question)
   end
 
+  def delete_answer(%Answer{} = answer) do
+    Repo.delete(answer)
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking question changes.
 
@@ -110,35 +131,7 @@ defmodule Hub.QA do
     Question.changeset(question, %{})
   end
 
-  # 
-  # answer calls
   #
-
-  # def get_answer!(id) do
-  #   Repo.get!(Answer, id)
-  # end
-
-  # def create_answer(attrs \\ %{}) do
-  #   %Answer{}
-  #   |> Answer.changeset(attrs)
-  #   |> Repo.insert()
-  # end
-
-  # def delete_answer(%Answer{} = answer) do
-  #   Repo.delete(answer)
-  # end
-  
-  # def update_answer(%Answer{} = answer, attrs) do
-  #   answer
-  #   |> Answer.changeset(attrs)
-  #   |> Repo.update()
-  # end
-
-  # 
-  # end answer calls
-  #
-
-  # 
   # profile calls
   #
 
@@ -159,14 +152,14 @@ defmodule Hub.QA do
   def delete_profile(%Profile{} = profile) do
     Repo.delete(profile)
   end
-  
+
   def update_profile(%Profile{} = profile, attrs) do
     profile
     |> Profile.changeset(attrs)
     |> Repo.update()
   end
 
-  # 
+  #
   # end profile calls
   #
 
