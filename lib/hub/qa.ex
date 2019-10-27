@@ -8,9 +8,35 @@ defmodule Hub.QA do
   alias Hub.Repo
   alias Hub.QA.{Question, Answer, Profile}
 
+  # questions
+
   def list_questions do
     Repo.all(Question)
   end
+
+  def get_question!(id), do: Repo.get!(Question, id)
+
+  def create_question(attrs \\ %{}) do
+    %Question{}
+    |> Question.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def change_question(%Question{} = question) do
+    Question.changeset(question, %{})
+  end
+
+  def update_question(%Question{} = question, attrs) do
+    question
+    |> Question.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_question(%Question{} = question) do
+    Repo.delete(question)
+  end
+
+  # answers
 
   def list_answers do
     Repo.all(Answer)
@@ -22,25 +48,12 @@ defmodule Hub.QA do
     |> Repo.all()
   end
 
-  def get_question!(id), do: Repo.get!(Question, id)
   def get_answer!(id), do: Repo.get!(Answer, id)
-
-  def create_question(attrs \\ %{}) do
-    %Question{}
-    |> Question.changeset(attrs)
-    |> Repo.insert()
-  end
 
   def create_answer(attrs \\ %{}) do
     %Answer{}
     |> Answer.changeset(attrs)
     |> Repo.insert()
-  end
-
-  def update_question(%Question{} = question, attrs) do
-    question
-    |> Question.changeset(attrs)
-    |> Repo.update()
   end
 
   def update_answer(%Answer{} = answer, attrs) do
@@ -49,17 +62,11 @@ defmodule Hub.QA do
     |> Repo.update()
   end
 
-  def delete_question(%Question{} = question) do
-    Repo.delete(question)
-  end
-
   def delete_answer(%Answer{} = answer) do
     Repo.delete(answer)
   end
 
-  def change_question(%Question{} = question) do
-    Question.changeset(question, %{})
-  end
+  # profiles
 
   def list_profiles do
     Repo.all(Profile)
