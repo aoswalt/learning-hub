@@ -11,7 +11,7 @@ defmodule HubWeb.AnswerController do
 
     answers =
       if question_id do
-        QA.get_answers(question_id)
+        QA.list_answers_for_question(question_id)
       else
         QA.list_answers()
       end
