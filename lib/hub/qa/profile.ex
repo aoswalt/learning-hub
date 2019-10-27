@@ -15,8 +15,8 @@ defmodule Hub.QA.Profile do
   end
 
     @doc false
-  def changeset(question, attrs) do
-    question
+  def changeset(profile, attrs) do
+    profile
     |> cast(attrs, [:name, :cohort, :tags, :bio, :userId])
     |> validate_required([:name, :cohort, :tags, :bio, :userId])
   end

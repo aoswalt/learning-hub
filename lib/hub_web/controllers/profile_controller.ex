@@ -12,7 +12,7 @@ defmodule HubWeb.ProfileController do
   end
 
   def create(conn, %{"profile" => profile_params}) do
-    with {:ok, %profile{} = profile} <- QA.create_profile(profile_params) do
+    with {:ok, %Profile{} = profile} <- QA.create_profile(profile_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.profile_path(conn, :show, profile))
