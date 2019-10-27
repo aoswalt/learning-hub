@@ -1,9 +1,10 @@
 defmodule Hub.QA.Question do
   use Ecto.Schema
 
-  import Ecto.Changeset
+  import Ecto.{Changeset, Query}
 
   alias Hub.QA.Answer
+  alias __MODULE__
 
   schema "questions" do
     field :tags, {:array, :string}
@@ -20,5 +21,15 @@ defmodule Hub.QA.Question do
     question
     |> cast(attrs, [:text, :tags, :created_by])
     |> validate_required([:text, :tags, :created_by])
+  end
+
+  def where_has_tags(query \\ Question, tags)
+
+  def where_has_tags(query, tags) when not is_list(tags) do
+    where_has_tags(query, List.wrap(tags))
+  end
+
+  def where_has_tags(query, tags) do
+    where(query, [q],  fragment("? :: text[] && ?", q.tags, ^tags))
   end
 end

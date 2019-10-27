@@ -10,8 +10,12 @@ defmodule Hub.QA do
 
   # questions
 
-  def list_questions do
-    Repo.all(Question)
+  def list_questions(options \\ []) do
+    tags = Keyword.get(options, :tags)
+
+    query = if tags, do: Question.where_has_tags(tags), else: Question
+
+    Repo.all(query)
   end
 
   def get_question!(id), do: Repo.get!(Question, id)

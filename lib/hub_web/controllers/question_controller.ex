@@ -6,8 +6,11 @@ defmodule HubWeb.QuestionController do
 
   action_fallback HubWeb.FallbackController
 
-  def index(conn, _params) do
-    questions = QA.list_questions()
+  def index(conn, params) do
+    tags = Map.get(params, "tags")
+
+    questions = QA.list_questions(tags: tags)
+
     render(conn, "index.json", questions: questions)
   end
 
