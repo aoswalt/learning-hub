@@ -28,7 +28,7 @@ defmodule HubWeb.ProfileController do
   def update(conn, %{"id" => id} = profile_params) do
     profile = QA.get_profile!(id)
 
-    with {:ok, %profile{} = profile} <- QA.update_profile(profile, profile_params) do
+    with {:ok, %Profile{} = profile} <- QA.update_profile(profile, profile_params) do
       render(conn, "show.json", profile: profile)
     end
   end
