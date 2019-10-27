@@ -42,5 +42,6 @@ defmodule HubWeb.Endpoint do
     key: "_hub_key",
     signing_salt: "/bWnNuwU"
 
+  plug CORSPlug
   plug HubWeb.Router
 end
