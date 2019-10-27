@@ -3,19 +3,21 @@ defmodule HubWeb.ProfileView do
   alias HubWeb.ProfileView
 
   def render("index.json", %{profiles: profiles}) do
-    %{data: render_many(profiles, ProfileView, "profile.json")}
+    render_many(profiles, ProfileView, "profile.json")
   end
 
   def render("show.json", %{profile: profile}) do
-    %{data: render_one(profile, ProfileView, "profile.json")}
+    render_one(profile, ProfileView, "profile.json")
   end
 
   def render("profile.json", %{profile: profile}) do
-    %{id: profile.id,
+    %{
+      id: profile.id,
       name: profile.name,
       cohort: profile.cohort,
       tags: profile.tags,
       bio: profile.bio,
-      userId: profile.user_id}
+      userId: profile.user_id
+    }
   end
 end
