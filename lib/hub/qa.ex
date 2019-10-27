@@ -8,6 +8,7 @@ defmodule Hub.QA do
 
   alias Hub.QA.Question
   alias Hub.QA.Answer
+  alias Hub.QA.Profile
 
   @doc """
   Returns the list of questions.
@@ -130,7 +131,36 @@ defmodule Hub.QA do
     Question.changeset(question, %{})
   end
 
-  def change_answer(%Answer{} = answer) do
-    Answer.changeset(answer, %{})
+  #
+  # profile calls
+  #
+
+  def list_profiles do
+    Repo.all(Profile)
   end
+
+  def get_profile!(id) do
+    Repo.get!(Profile, id)
+  end
+
+  def create_profile(attrs \\ %{}) do
+    %Profile{}
+    |> Profile.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def delete_profile(%Profile{} = profile) do
+    Repo.delete(profile)
+  end
+
+  def update_profile(%Profile{} = profile, attrs) do
+    profile
+    |> Profile.changeset(attrs)
+    |> Repo.update()
+  end
+
+  #
+  # end profile calls
+  #
+
 end
