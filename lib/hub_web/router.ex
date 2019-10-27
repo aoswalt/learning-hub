@@ -27,4 +27,12 @@ defmodule HubWeb.Router do
     resources "/profiles", ProfileController, except: [:new, :edit]
     resources "/answers", AnswerController, except: [:new, :edit]
   end
+
+  scope "/auth", HubWeb do
+    pipe_through :api
+
+    get "/validate", AuthController, :validate
+    # get "/:provider", AuthController, :request
+    # get "/:provider/callback", AuthController, :callback
+  end
 end
