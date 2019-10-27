@@ -36,7 +36,7 @@ defmodule HubWeb.ProfileController do
   def delete(conn, %{"id" => id}) do
     profile = QA.get_profile!(id)
 
-    with {:ok, %profile{}} <- QA.delete_profile(profile) do
+    with {:ok, %Profile{}} <- QA.delete_profile(profile) do
       send_resp(conn, :no_content, "")
     end
   end
