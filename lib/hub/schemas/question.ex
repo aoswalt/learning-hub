@@ -16,10 +16,14 @@ defmodule Hub.Question do
     timestamps()
   end
 
+  def solve(question, answer_id) do
+    changeset(question, %{solution_id: answer_id})
+  end
+
   @doc false
   def changeset(question, attrs) do
     question
-    |> cast(attrs, [:text, :tags, :created_by])
+    |> cast(attrs, [:text, :tags, :created_by, :solution_id])
     |> validate_required([:text, :tags, :created_by])
   end
 
