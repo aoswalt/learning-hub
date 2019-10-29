@@ -1,5 +1,6 @@
 defmodule HubWeb.ProfileView do
   use HubWeb, :view
+
   alias HubWeb.ProfileView
 
   def render("index.json", %{profiles: profiles}) do
@@ -12,12 +13,12 @@ defmodule HubWeb.ProfileView do
 
   def render("profile.json", %{profile: profile}) do
     %{
-      id: profile.id,
-      name: profile.name,
-      cohort: profile.cohort,
-      tags: profile.tags,
-      bio: profile.bio,
-      userId: profile.user_id
+      "id" => profile.id,
+      "name" => profile.name,
+      "cohort" => profile.cohort,
+      "tags" => profile.tags,
+      "bio" => profile.bio,
+      "userId" => profile.user_id
     }
   end
 end
