@@ -12,6 +12,11 @@ defmodule HubWeb.QuestionView do
   end
 
   def render("question.json", %{question: question}) do
-    %{"id" => question.id, "text" => question.text, "tags" => question.tags}
+    %{
+      "id" => question.id,
+      "text" => question.text,
+      "tags" => question.tags,
+      "createdBy" => question.created_by
+    }
   end
 end
