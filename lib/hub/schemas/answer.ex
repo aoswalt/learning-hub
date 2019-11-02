@@ -18,5 +18,6 @@ defmodule Hub.Answer do
     question
     |> cast(attrs, [:text, :created_by, :question_id])
     |> validate_required([:text, :created_by, :question_id])
+    |> assoc_constraint(:question)
   end
 end
