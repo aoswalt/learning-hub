@@ -1,9 +1,40 @@
 defmodule HubWeb.AnswerController do
   use HubWeb, :controller
 
+  import Norm
+
   alias Hub.Answer
 
   action_fallback HubWeb.FallbackController
+
+  def resource_s(type \\ nil) do
+    s =
+      schema(%{
+        "id" => spec(is_integer() and (&(&1 > 0))),
+        "questionId" => spec(is_integer() and (&(&1 > 0))),
+        "text" =>
+          with_gen(
+            spec(is_binary() and fn str -> String.length(str) > 0 end),
+            StreamData.string(:printable, min_length: 1)
+          ),
+        "createdBy" =>
+          with_gen(
+            spec(is_binary() and fn str -> String.length(str) > 0 end),
+            StreamData.string(:printable, min_length: 1)
+          ),
+        "createdAt" =>
+          with_gen(
+            spec(&match?({:ok, %NaiveDateTime{}}, NaiveDateTime.from_iso8601(&1))),
+            Hub.Spec.Generators.naive_datetime(true)
+          )
+      })
+
+    case type do
+      :create -> selection(s, ["text", "questionId", "createdBy"])
+      :update -> selection(s, ["text"])
+      _ -> s
+    end
+  end
 
   def index(conn, params) do
     question_id = Map.get(params, "question_id")

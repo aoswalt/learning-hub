@@ -1,9 +1,39 @@
 defmodule HubWeb.QuestionController do
   use HubWeb, :controller
 
+  import Norm
+
   alias Hub.Question
 
   action_fallback HubWeb.FallbackController
+
+  def resource_s(type \\ nil) do
+    s =
+      schema(%{
+        "id" => spec(is_integer() and (&(&1 > 0))),
+        "text" =>
+          with_gen(
+            spec(is_binary() and fn str -> String.length(str) > 0 end),
+            StreamData.string(:printable, min_length: 1)
+          ),
+        "tags" =>
+          with_gen(
+            spec(is_list() and fn tags -> Enum.all?(tags, &is_binary/1) end),
+            StreamData.list_of(StreamData.string(:printable, min_length: 1))
+          ),
+        "createdBy" =>
+          with_gen(
+            spec(is_binary() and fn str -> String.length(str) > 0 end),
+            StreamData.string(:printable, min_length: 1)
+          )
+      })
+
+    case type do
+      :create -> selection(s, ["text", "tags", "createdBy"])
+      :update -> selection(s, ["text", "tags"])
+      _ -> s
+    end
+  end
 
   def index(conn, params) do
     tags = Map.get(params, "tags")
