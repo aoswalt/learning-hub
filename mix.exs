@@ -38,6 +38,7 @@ defmodule Hub.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
+      {:nanoid, "~> 2.0.2"},
       {:norm, "~> 0.7"},
       {:phoenix, "~> 1.4.10"},
       {:phoenix_ecto, "~> 4.0"},
@@ -46,7 +47,7 @@ defmodule Hub.MixProject do
       {:phoenix_pubsub, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},
       {:postgrex, ">= 0.0.0"},
-      {:stream_data, "~> 0.4"},
+      {:stream_data, "~> 0.4"}
     ]
   end
 
