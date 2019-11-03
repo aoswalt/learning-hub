@@ -8,7 +8,7 @@
 use Mix.Config
 
 config :hub,
-  ecto_repos: [Hub.Repo]
+  ecto_repos: [HubPersistence.Repo]
 
 # Configures the endpoint
 config :hub, HubWeb.Endpoint,

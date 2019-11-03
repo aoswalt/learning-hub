@@ -1,4 +1,4 @@
-defmodule Hub.Repo do
+defmodule HubPersistence.Repo do
   use Ecto.Repo,
     otp_app: :hub,
     adapter: Ecto.Adapters.Postgres

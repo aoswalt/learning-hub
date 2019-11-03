@@ -1,4 +1,4 @@
-defmodule Hub.Profile do
+defmodule HubPersistence.Profile do
   use Ecto.Schema
 
   import Ecto.Changeset

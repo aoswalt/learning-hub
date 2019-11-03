@@ -1,7 +1,7 @@
 use Mix.Config
 
 # Configure your database
-config :hub, Hub.Repo,
+config :hub, HubPersistence.Repo,
   username: "postgres",
   password: "postgres",
   database: "hub_test",

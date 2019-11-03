@@ -3,7 +3,7 @@ defmodule HubWeb.AnswerController do
 
   import Norm
 
-  alias Hub.Answer
+  alias HubPersistence.Answer
 
   action_fallback HubWeb.FallbackController
 
@@ -25,7 +25,7 @@ defmodule HubWeb.AnswerController do
         "createdAt" =>
           with_gen(
             spec(&match?({:ok, %NaiveDateTime{}}, NaiveDateTime.from_iso8601(&1))),
-            Hub.Spec.Generators.naive_datetime(true)
+            HubPersistence.Spec.Generators.naive_datetime(true)
           )
       })
 

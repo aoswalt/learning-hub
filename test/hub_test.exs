@@ -2,7 +2,7 @@ defmodule HubTest do
   use Hub.DataCase
 
   describe "questions" do
-    alias Hub.Question
+    alias HubPersistence.Question
 
     @valid_attrs %{tags: [], text: "some text", created_by: "that_guy"}
     @update_attrs %{tags: [], text: "some updated text"}

@@ -1,4 +1,4 @@
-defmodule Hub.Repo.Migrations.AddSolutionId do
+defmodule HubPersistence.Repo.Migrations.AddSolutionId do
   use Ecto.Migration
 
   def change do

@@ -1,4 +1,4 @@
-defmodule Hub.Repo.Migrations.CreateQuestions do
+defmodule HubPersistence.Repo.Migrations.CreateQuestions do
   use Ecto.Migration
 
   def change do

@@ -3,7 +3,7 @@ defmodule HubWeb.QuestionController do
 
   import Norm
 
-  alias Hub.Question
+  alias HubPersistence.Question
 
   action_fallback HubWeb.FallbackController
 

@@ -26,10 +26,10 @@ defmodule HubWeb.ChannelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Hub.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HubPersistence.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Hub.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(HubPersistence.Repo, {:shared, self()})
     end
 
     :ok

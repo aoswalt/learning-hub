@@ -1,4 +1,4 @@
-defmodule Hub.Repo.Migrations.RecaseUserId do
+defmodule HubPersistence.Repo.Migrations.RecaseUserId do
   use Ecto.Migration
 
   def change do

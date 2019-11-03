@@ -5,7 +5,7 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     Hub.Repo.insert!(%Hub.SomeSchema{})
+#     Hub.RepoPersistence.insert!(%Hub.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
