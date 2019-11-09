@@ -1,7 +1,7 @@
 defmodule HubWeb.AnswerControllerTest do
   use HubWeb.ConnCase, async: true
 
-  alias HubPersistence.Answer
+  alias HubDB.Answer
   alias HubWeb.Helpers.Answer, as: AnswerHelpers
   alias HubWeb.Helpers.Question, as: QuestionHelpers
 

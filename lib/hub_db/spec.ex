@@ -1,4 +1,4 @@
-defmodule HubPersistence.Spec.Generators do
+defmodule HubDB.Spec.Generators do
   import StreamData
 
   @time_zones ["Etc/UTC"]

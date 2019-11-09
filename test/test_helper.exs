@@ -1,2 +1,2 @@
 ExUnit.start()
-Ecto.Adapters.SQL.Sandbox.mode(HubPersistence.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(HubDB.Repo, :manual)

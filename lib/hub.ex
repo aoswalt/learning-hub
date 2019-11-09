@@ -9,8 +9,8 @@ defmodule Hub do
 
   import Ecto.Query, warn: false
 
-  alias HubPersistence.Repo
-  alias HubPersistence.{Question, Answer, Profile}
+  alias HubDB.Repo
+  alias HubDB.{Question, Answer, Profile}
 
   # questions
 

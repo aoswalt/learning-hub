@@ -1,7 +1,7 @@
 defmodule HubWeb.ProfileController do
   use HubWeb, :controller
 
-  alias HubPersistence.Profile
+  alias HubDB.Profile
 
   action_fallback HubWeb.FallbackController
 

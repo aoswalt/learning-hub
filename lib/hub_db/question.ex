@@ -1,9 +1,9 @@
-defmodule HubPersistence.Question do
+defmodule HubDB.Question do
   use Ecto.Schema
 
   import Ecto.{Changeset, Query}
 
-  alias HubPersistence.Answer
+  alias HubDB.Answer
   alias __MODULE__
 
   schema "questions" do

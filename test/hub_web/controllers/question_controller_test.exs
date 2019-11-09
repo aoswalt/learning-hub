@@ -1,7 +1,7 @@
 defmodule HubWeb.QuestionControllerTest do
   use HubWeb.ConnCase, async: true
 
-  alias HubPersistence.Question
+  alias HubDB.Question
   alias HubWeb.Helpers.Question, as: QuestionHelpers
 
   setup %{conn: conn} do

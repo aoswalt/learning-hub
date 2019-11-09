@@ -21,7 +21,7 @@ defmodule Hub.Question do
         timestamp:
           with_gen(
             spec(&match?(%NaiveDateTime{}, &1)),
-            HubPersistence.Spec.Generators.naive_datetime()
+            HubDB.Spec.Generators.naive_datetime()
           )
       })
 

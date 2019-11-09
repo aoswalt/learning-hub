@@ -1,9 +1,9 @@
-defmodule HubPersistence.Answer do
+defmodule HubDB.Answer do
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  alias HubPersistence.Question
+  alias HubDB.Question
 
   schema "answers" do
     field :text, :string

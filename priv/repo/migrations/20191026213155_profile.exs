@@ -1,4 +1,4 @@
-defmodule HubPersistence.Repo.Migrations.CreateProfiles do
+defmodule HubDB.Repo.Migrations.CreateProfiles do
   use Ecto.Migration
 
   def change do
