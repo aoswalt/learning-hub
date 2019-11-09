@@ -4,7 +4,7 @@ defmodule HubDB.Repo.Migrations.CreateAnswers do
   def change do
     create table(:answers) do
       add :text, :text
-      add :created_by, :string
+      add :created_by, :text
       add :question_id, references(:questions)
 
       timestamps()

@@ -3,9 +3,9 @@ defmodule HubDB.Repo.Migrations.CreateQuestions do
 
   def change do
     create table(:questions) do
-      add :tags, {:array, :string}
+      add :tags, {:array, :text}
       add :text, :text
-      add :created_by, :string
+      add :created_by, :text
 
       timestamps()
     end

@@ -3,11 +3,11 @@ defmodule HubDB.Repo.Migrations.CreateProfiles do
 
   def change do
     create table(:profiles) do
-      add :name, :string
-      add :cohort, :string
-      add :tags, {:array, :string}
-      add :bio, :string
-      add :userId, :string
+      add :name, :text
+      add :cohort, :text
+      add :tags, {:array, :text}
+      add :bio, :text
+      add :user_id, :text
 
       timestamps()
     end

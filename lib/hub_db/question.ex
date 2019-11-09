@@ -16,15 +16,15 @@ defmodule HubDB.Question do
     timestamps()
   end
 
-  def solve(question, answer_id) do
-    changeset(question, %{solution_id: answer_id})
-  end
-
   @doc false
   def changeset(question, attrs) do
     question
     |> cast(attrs, [:text, :tags, :created_by, :solution_id])
     |> validate_required([:text, :tags, :created_by])
+  end
+
+  def solve(question, answer_id) do
+    changeset(question, %{solution_id: answer_id})
   end
 
   def where_has_tags(query \\ Question, tags)
@@ -34,6 +34,6 @@ defmodule HubDB.Question do
   end
 
   def where_has_tags(query, tags) do
-    where(query, [q],  fragment("? :: text[] && ?", q.tags, ^tags))
+    where(query, [q],  fragment("? && ?", q.tags, ^tags))
   end
 end
