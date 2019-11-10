@@ -166,25 +166,35 @@ get_random_tags = fn max ->
   end)
 end
 
-# add profiles
+# add users
 user_ids =
   bios
-  |> Enum.zip(names)
-  |> Enum.map(fn {bio, name} ->
-    cohort_prefix = get_weighted.(cohort_prefixes)
-    cohort_num = 50 |> :random.uniform() |> Integer.to_string()
-
-    %{
-      name: name,
-      cohort: cohort_prefix <> cohort_num,
-      tags: get_random_tags.(6),
-      bio: bio,
-      user_id: 0..7 |> Enum.map(fn _ -> Enum.random(?a..?z) end) |> to_string()
-    }
+  |> Enum.map(fn _ ->
+    %HubDB.User{}
+    |> Ecto.Changeset.change()
+    |> HubDB.Repo.insert()
   end)
-  |> Enum.map(&Hub.create_profile/1)
   |> Enum.map(unpack_result)
-  |> Enum.map(& &1.user_id)
+  |> Enum.map(&Map.get(&1, :id))
+
+# add profiles
+user_ids
+|> Enum.zip(bios)
+|> Enum.zip(names)
+|> Enum.map(fn {{user_id, bio}, name} ->
+  cohort_prefix = get_weighted.(cohort_prefixes)
+  cohort_num = 50 |> :random.uniform() |> Integer.to_string()
+
+  %{
+    name: name,
+    cohort: cohort_prefix <> cohort_num,
+    tags: get_random_tags.(6),
+    bio: bio,
+    user_id: user_id
+  }
+end)
+|> Enum.map(&Hub.create_profile/1)
+|> Enum.map(unpack_result)
 
 # add questions
 question_ids =

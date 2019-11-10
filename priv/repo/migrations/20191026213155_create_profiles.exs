@@ -7,7 +7,7 @@ defmodule HubDB.Repo.Migrations.CreateProfiles do
       add :cohort, :text
       add :tags, {:array, :text}
       add :bio, :text
-      add :user_id, :text
+      add :user_id, references(:users, type: :text)
 
       timestamps()
     end
