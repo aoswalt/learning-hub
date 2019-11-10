@@ -18,6 +18,19 @@ defmodule HubWeb.QuestionControllerTest do
       conn = get(conn, Routes.question_path(conn, :index))
       assert [_] = json_response(conn, 200)
     end
+
+    test "filters by tags", %{conn: conn} do
+      conn = get(conn, Routes.question_path(conn, :index), %{"tags" => ["sql"]})
+      assert [] = json_response(conn, 200)
+
+      %{tags: [tag | _]} = QuestionHelpers.create()
+
+      conn = get(conn, Routes.question_path(conn, :index), %{"tags" => [tag]})
+      assert [_] = json_response(conn, 200)
+
+      conn = get(conn, Routes.question_path(conn, :index), %{"tags" => []})
+      assert [] = json_response(conn, 200)
+    end
   end
 
   describe "create question" do
