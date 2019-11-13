@@ -30,7 +30,7 @@ defmodule HubWeb.Router do
   end
 
   defp parseltongue(conn, _opts) do
-    snake_params = Map.new(conn.params, fn {k, v} -> {Macro.underscore(k), v} end)
+    snake_params = Map.new(conn.params, fn {k, v} -> {Phoenix.Naming.underscore(k), v} end)
     Map.put(conn, :params, snake_params)
   end
 end
