@@ -1,13 +1,36 @@
 defmodule HubWeb.QuestionController do
-  use HubWeb, :controller
+  use HubWeb.ResourceController, for: HubDB.Question, camelize?: true
 
   import Norm
 
   alias HubDB.Question
 
-  action_fallback HubWeb.FallbackController
+  # 2-arity - query, params
+  # nil is non-filterable
+  @impl HubWeb.ResourceController
+  def filter_overrides(), do: %{
+    "tags" => &Question.where_has_tags(&1, &2)
+  }
 
-  def resource_s(type \\ nil) do
+  # filter "tags", &Question.where_has_tags(&1, &2)
+  # param "tags", &Question.where_has_tags(&1, &2)
+
+  # one of serializable_fields, to_serializable, or derive Jason
+  # or camelize?: true
+  # def serializable_fields(), do: [:id, :text, :tags, :created_by]
+
+  # @impl ResourceController
+  # def to_serializable(question) do
+  #   %{
+  #     "id" => question.id,
+  #     "text" => question.text,
+  #     "tags" => question.tags,
+  #     "createdBy" => question.created_by
+  #   }
+  # end
+
+  @impl HubWeb.ResourceController
+  def resource_s(type) do
     s =
       schema(%{
         "id" => spec(is_integer() and (&(&1 > 0))),
@@ -32,44 +55,6 @@ defmodule HubWeb.QuestionController do
       :create -> selection(s, ["text", "tags", "createdBy"])
       :update -> selection(s, ["text", "tags"])
       _ -> s
-    end
-  end
-
-  def index(conn, params) do
-    tags = Map.get(params, "tags")
-
-    questions = Hub.list_questions(tags: tags)
-
-    render(conn, "index.json", questions: questions)
-  end
-
-  def create(conn, question_params) do
-    with {:ok, %Question{} = question} <- Hub.create_question(question_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.question_path(conn, :show, question))
-      |> render("show.json", question: question)
-    end
-  end
-
-  def show(conn, %{"id" => id}) do
-    question = Hub.get_question!(id)
-    render(conn, "show.json", question: question)
-  end
-
-  def update(conn, %{"id" => id} = question_params) do
-    question = Hub.get_question!(id)
-
-    with {:ok, %Question{} = question} <- Hub.update_question(question, question_params) do
-      render(conn, "show.json", question: question)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    question = Hub.get_question!(id)
-
-    with {:ok, %Question{}} <- Hub.delete_question(question) do
-      send_resp(conn, :no_content, "")
     end
   end
 end
