@@ -4,7 +4,7 @@ defmodule HubWeb.Helpers do
       {:ok, question} =
         :create
         |> gen_params()
-        |> Map.new(fn {k, v} -> {Macro.underscore(k), v} end)
+        |> Map.new(fn {k, v} -> {Phoenix.Naming.underscore(k), v} end)
         |> Hub.create_question()
 
       question
@@ -31,7 +31,7 @@ defmodule HubWeb.Helpers do
       {:ok, answer} =
         :create
         |> gen_params(question_id)
-        |> Map.new(fn {k, v} -> {Macro.underscore(k), v} end)
+        |> Map.new(fn {k, v} -> {Phoenix.Naming.underscore(k), v} end)
         |> Hub.create_answer()
 
       answer
