@@ -9,7 +9,7 @@ defmodule Hub.Application do
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository
-      Hub.Repo,
+      HubDB.Repo,
       # Start the endpoint when the application starts
       HubWeb.Endpoint
       # Starts a worker by calling: Hub.Worker.start_link(arg)

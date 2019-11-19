@@ -16,7 +16,7 @@ defmodule Hub.DataCase do
 
   using do
     quote do
-      alias Hub.Repo
+      alias HubDB.Repo
 
       import Ecto
       import Ecto.Changeset
@@ -26,10 +26,10 @@ defmodule Hub.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Hub.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HubDB.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Hub.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(HubDB.Repo, {:shared, self()})
     end
 
     :ok

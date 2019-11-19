@@ -5,39 +5,232 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     Hub.Repo.insert!(%Hub.SomeSchema{})
+#     Hub.RepoDB.insert!(%Hub.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-{:ok, %{id: aa, user_id: a}} =  %Hub.QA.Profile{} |> Hub.QA.Profile.changeset(%{name: "Rich", cohort: "E8", bio: "International man of mystery", user_id: "asdsadhjk1", tags: ["javascript"]}) |> Hub.Repo.insert()
+names =
+  [
+    "Adam",
+    "Amy",
+    "Bobby",
+    "Dominic",
+    "Frank",
+    "Geoff",
+    "James",
+    "Jane",
+    "Jimbo",
+    "John",
+    "Manila",
+    "Matt",
+    "Rich",
+    "Rick",
+    "Rose",
+    "Sarah",
+    "Steve",
+    "Will"
+  ]
+  |> Enum.shuffle()
 
-{:ok, %{id: bb, user_id: b}} =  %Hub.QA.Profile{} |> Hub.QA.Profile.changeset(%{name: "Matt", cohort: "33", bio: "Coined the phrase 'coin the phrase'", user_id: "dsfhkjh342", tags: ["python"]}) |> Hub.Repo.insert()
+cohort_prefixes = [{"", 0.90}, {"E", 0.08}, {"DS", 0.02}]
 
-{:ok, %{id: cc, user_id: c}} =  %Hub.QA.Profile{} |> Hub.QA.Profile.changeset(%{name: "Will", cohort: "34", bio: "Compiles on the first try", user_id: "34809dfjsdfk", tags: ["c#"]}) |> Hub.Repo.insert()
+bios =
+  [
+    "International (wo)man of mystery",
+    "Coined the phrase 'coin the phrase'",
+    "Divides by zero",
+    "Sold a comb to a bald man",
+    "Compiles on the first try",
+    "Hacked the matrix",
+    "Knows a thing or 2",
+    "Did the thing with the stuff"
+  ]
+  |> Enum.shuffle()
 
-{:ok, %{id: dd, user_id: d}} =  %Hub.QA.Profile{} |> Hub.QA.Profile.changeset(%{name: "Adam", cohort: "13", bio: "Divides by zero", user_id: "867asdfjdk", tags: ["elixir"]}) |> Hub.Repo.insert()
+questions =
+  [
+    "How do I Vim?",
+    "Wtf is a hook?!",
+    "Help, I injected SQL into my veins!",
+    "Why do you work different here?",
+    "Attempting to go back in time and prevent the creation of sql",
+    "It broke",
+    "How do I do the thing?"
+  ]
+  |> Enum.shuffle()
 
-{:ok, %{id: ee, user_id: e}} =  %Hub.QA.Profile{} |> Hub.QA.Profile.changeset(%{name: "Bobby", cohort: "34", bio: "Sold a comb to a bald man", user_id: "458978sdfhjkh", tags: ["react"]}) |> Hub.Repo.insert()
+answers =
+  [
+    "You ask Adam",
+    "Learn the matrix",
+    "Try :Tutor in Neovim",
+    "Reserved for later",
+    "Time to reformat",
+    "Install Linux",
+    "Are permissions correct?",
+    "Check out my github repo to see the future",
+    "git gud",
+    "Do the thing",
+    "Option C works better",
+    "alt+F4"
+  ]
+  |> Enum.shuffle()
 
+tags = %{
+  ajax: "Ajax",
+  android: "Android",
+  angular: "Angular",
+  angularjs: "AngularJS",
+  arrays: "Arrays",
+  asp_dotnet: "ASP.NET",
+  asp_dotnet_mvc: "ASP.NET MVC",
+  bash: "Bash",
+  c: "C",
+  c_sharp: "C#",
+  cpp: "C++",
+  css: "CSS",
+  database: "Database",
+  django: "Django",
+  dotnet: ".NET",
+  eclipse: "Eclipse",
+  elixir: "Elixir",
+  excel: "Excel",
+  git: "Git",
+  html: "HTML",
+  ios: "IOS",
+  iphone: "iPhone",
+  java: "Java",
+  javascript: "JavaScript",
+  jquery: "jQuery",
+  json: "JSON",
+  laravel: "Laravel",
+  linux: "Linux",
+  mongodb: "MongoDB",
+  multithreading: "Multithreading",
+  mysql: "MYSQL",
+  node: "Node.js",
+  objective_c: "Objective C",
+  oracle: "Oracle",
+  pandas: "Pandas",
+  php: "PHP",
+  postgresql: "Postgresql",
+  python: "Python",
+  r: "R",
+  react: "Reactjs",
+  regex: "Regex",
+  ruby: "Ruby",
+  rails: "Ruby On Rails",
+  spring: "Spring",
+  sql: "SQL",
+  sql_server: "SQL Server",
+  string: "String",
+  swift: "Swift",
+  vb_dotnet: "VB.NET",
+  vba: "VBA",
+  vim: "vim",
+  windows: "Windows",
+  wordpress: "Wordpress",
+  wpf: "WPF",
+  xcode: "Xcode",
+  xml: "XML"
+}
 
-{:ok, %{id: f}} =  %Hub.QA.Question{} |> Hub.QA.Question.changeset(%{text: "How do I Vim", created_at: "2019-10-26", created_by: e, tags: ["elixir"]}) |> Hub.Repo.insert()
+get_weighted = fn options ->
+  Enum.reduce_while(options, :random.uniform(), fn {element, chance}, num ->
+    remaining = num - chance
+    if remaining <= 0, do: {:halt, element}, else: {:cont, remaining}
+  end)
+end
 
-{:ok, %{id: g}} =  %Hub.QA.Question{} |> Hub.QA.Question.changeset(%{text: "Wtf is a hook", created_at: "2019-10-25", created_by: a, tags: ["react", "javascript"]}) |> Hub.Repo.insert()
+unpack_result = fn result ->
+  case result do
+    {:ok, ok} ->
+      ok
 
-{:ok, %{id: h}} =  %Hub.QA.Question{} |> Hub.QA.Question.changeset(%{text: "Help, I injected SQL into my veins", created_at: "2019-09-24", created_by: a, tags: ["c#", "sql"]}) |> Hub.Repo.insert()
+    {:error, %Ecto.Changeset{} = changeset} ->
+      raise Ecto.InvalidChangesetError, changeset: changeset
 
-{:ok, %{id: j}} =  %Hub.QA.Question{} |> Hub.QA.Question.changeset(%{text: "If postgres doesn't work with docker someone might have to die.", created_at: "2018-07-13", created_by: d, tags: ["postgresql"]}) |> Hub.Repo.insert()
+    {:error, error} ->
+      raise error
+  end
+end
 
-{:ok, %{id: k}} =  %Hub.QA.Question{} |> Hub.QA.Question.changeset(%{text: "Attempting to go back in time and prevent the creation of sql", created_at: "2019-04-20", created_by: b, tags: ["sql"]}) |> Hub.Repo.insert()
+get_random_tags = fn max ->
+  0..:random.uniform(max)
+  |> Enum.map(fn _ ->
+    tags
+    |> Map.keys()
+    |> Enum.random()
+    |> Atom.to_string()
+  end)
+end
 
+# add users
+user_ids =
+  bios
+  |> Enum.map(fn _ ->
+    %HubDB.User{}
+    |> Ecto.Changeset.change()
+    |> HubDB.Repo.insert()
+  end)
+  |> Enum.map(unpack_result)
+  |> Enum.map(&Map.get(&1, :id))
 
-{:ok, %{id: l}} =  %Hub.QA.Answer{} |> Hub.QA.Answer.changeset(%{text: "You ask Adam", created_at: "2019-10-27", created_by: a, question_id: f}) |> Hub.Repo.insert()
+# add profiles
+user_ids
+|> Enum.zip(bios)
+|> Enum.zip(names)
+|> Enum.map(fn {{user_id, bio}, name} ->
+  cohort_prefix = get_weighted.(cohort_prefixes)
+  cohort_num = 50 |> :random.uniform() |> Integer.to_string()
 
-{:ok, %{id: m}} =  %Hub.QA.Answer{} |> Hub.QA.Answer.changeset(%{text: "Reserved for later", created_at: "2019-10-26", created_by: b, question_id: g}) |> Hub.Repo.insert()
+  %{
+    name: name,
+    cohort: cohort_prefix <> cohort_num,
+    tags: get_random_tags.(6),
+    bio: bio,
+    user_id: user_id
+  }
+end)
+|> Enum.map(&Hub.create_profile/1)
+|> Enum.map(unpack_result)
 
-{:ok, %{id: n}} =  %Hub.QA.Answer{} |> Hub.QA.Answer.changeset(%{text: "Time to reformat", created_at: "2019-09-27", created_by: c, question_id: h}) |> Hub.Repo.insert()
+# add questions
+question_ids =
+  questions
+  |> Enum.map(
+    &%{
+      text: &1,
+      tags: get_random_tags.(3),
+      created_by: Enum.random(user_ids)
+    }
+  )
+  |> Enum.map(&Hub.create_question/1)
+  |> Enum.map(unpack_result)
+  |> Enum.map(& &1.id)
 
-{:ok, %{id: o}} =  %Hub.QA.Answer{} |> Hub.QA.Answer.changeset(%{text: "Install Linux", created_at: "2018-10-11", created_by: e, question_id: j}) |> Hub.Repo.insert()
+# add answers
+answered_questions =
+  answers
+  |> Enum.map(
+    &%{
+      text: &1,
+      created_by: Enum.random(user_ids),
+      question_id: Enum.random(question_ids)
+    }
+  )
+  |> Enum.map(&Hub.create_answer/1)
+  |> Enum.map(unpack_result)
 
-{:ok, %{id: p}} =  %Hub.QA.Answer{} |> Hub.QA.Answer.changeset(%{text: "Check out my github repo to see the future", created_at: "2019-10-27", created_by: d, question_id: f}) |> Hub.Repo.insert()
+# set solutions
+answered_questions
+|> Enum.group_by(& &1.question_id)
+|> Enum.reject(fn _ -> :random.uniform() < 0.2 end)
+|> Enum.map(fn {q_id, ans_list} -> {q_id, List.first(ans_list)} end)
+|> Enum.map(fn {q_id, ans} ->
+  q_id
+  |> Hub.get_question!()
+  |> Hub.update_question(%{solution_id: ans.id})
+end)
+|> Enum.map(unpack_result)

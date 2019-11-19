@@ -8,7 +8,7 @@
 use Mix.Config
 
 config :hub,
-  ecto_repos: [Hub.Repo]
+  ecto_repos: [HubDB.Repo]
 
 # Configures the endpoint
 config :hub, HubWeb.Endpoint,
@@ -24,6 +24,10 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :nanoid,
+  size: 12,
+  alphabet: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

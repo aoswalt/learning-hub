@@ -1,15 +1,15 @@
-defmodule Hub.QA.Question do
+defmodule HubDB.Question do
   use Ecto.Schema
 
   import Ecto.{Changeset, Query}
 
-  alias Hub.QA.Answer
+  alias HubDB.{Answer, User}
   alias __MODULE__
 
   schema "questions" do
     field :tags, {:array, :string}
     field :text, :string
-    field :created_by, :string
+    belongs_to :created_by_user, User, foreign_key: :created_by, type: :string
     belongs_to :solution, Answer
     has_many :answers, Answer
 
@@ -19,8 +19,13 @@ defmodule Hub.QA.Question do
   @doc false
   def changeset(question, attrs) do
     question
-    |> cast(attrs, [:text, :tags, :created_by])
+    |> cast(attrs, [:text, :tags, :created_by, :solution_id])
     |> validate_required([:text, :tags, :created_by])
+    |> assoc_constraint(:created_by_user)
+  end
+
+  def solve(question, answer_id) do
+    changeset(question, %{solution_id: answer_id})
   end
 
   def where_has_tags(query \\ Question, tags)
@@ -30,6 +35,6 @@ defmodule Hub.QA.Question do
   end
 
   def where_has_tags(query, tags) do
-    where(query, [q],  fragment("? :: text[] && ?", q.tags, ^tags))
+    where(query, [q], fragment("? && ?", q.tags, ^tags))
   end
 end

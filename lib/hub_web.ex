@@ -23,24 +23,24 @@ defmodule HubWeb do
 
       import Plug.Conn
       import HubWeb.Gettext
+
       alias HubWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
+      # Use all HTML functionality (forms, tags, etc)
+      use Phoenix.HTML
+
       use Phoenix.View,
         root: "lib/hub_web/templates",
         namespace: HubWeb
 
-      # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
-
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
-
       import HubWeb.ErrorHelpers
       import HubWeb.Gettext
+      import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
+
       alias HubWeb.Router.Helpers, as: Routes
     end
   end
@@ -48,6 +48,7 @@ defmodule HubWeb do
   def router do
     quote do
       use Phoenix.Router
+
       import Plug.Conn
       import Phoenix.Controller
     end
@@ -56,6 +57,7 @@ defmodule HubWeb do
   def channel do
     quote do
       use Phoenix.Channel
+
       import HubWeb.Gettext
     end
   end

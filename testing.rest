@@ -1,0 +1,34 @@
+http://localhost:4000/api
+
+--
+
+--
+GET /questions?tags[]=xcode&tags[]=dotnet
+
+--
+GET /questions?created_by=xIRCAuia45Nj
+
+--
+GET /questions/1
+
+--
+GET /questions/100
+
+--
+POST /questions
+{}
+
+--
+GET /answers
+
+--
+GET /answers/1
+
+--
+GET /answers?question_id=3
+
+--
+GET /profiles
+
+--
+GET /profiles?cohort=16

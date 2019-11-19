@@ -1,46 +1,49 @@
 defmodule HubWeb.QuestionController do
-  use HubWeb, :controller
+  use HubWeb.ResourceController, for: HubDB.Question, camelize?: true
 
-  alias Hub.QA
-  alias Hub.QA.Question
+  import Hub.Spec
+  import Norm
 
-  action_fallback HubWeb.FallbackController
+  alias HubDB.Question
 
-  def index(conn, params) do
-    tags = Map.get(params, "tags")
+  # 2-arity - query, params
+  # nil is non-filterable
+  @impl HubWeb.ResourceController
+  def filter_overrides(), do: %{
+    "tags" => &Question.where_has_tags(&1, &2)
+  }
 
-    questions = QA.list_questions(tags: tags)
+  # filter "tags", &Question.where_has_tags(&1, &2)
+  # param "tags", &Question.where_has_tags(&1, &2)
 
-    render(conn, "index.json", questions: questions)
-  end
+  # one of serializable_fields, to_serializable, or derive Jason
+  # or camelize?: true
+  # def serializable_fields(), do: [:id, :text, :tags, :created_by]
 
-  def create(conn, question_params) do
-    with {:ok, %Question{} = question} <- QA.create_question(question_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.question_path(conn, :show, question))
-      |> render("show.json", question: question)
-    end
-  end
+  # @impl ResourceController
+  # def to_serializable(question) do
+  #   %{
+  #     "id" => question.id,
+  #     "text" => question.text,
+  #     "tags" => question.tags,
+  #     "createdBy" => question.created_by
+  #   }
+  # end
 
-  def show(conn, %{"id" => id}) do
-    question = QA.get_question!(id)
-    render(conn, "show.json", question: question)
-  end
+  @impl HubWeb.ResourceController
+  def resource_s(type) do
+    s =
+      schema(%{
+        "id" => positive_integer(),
+        "text" => nonempty_string(),
+        "tags" => coll_of(nonempty_string(), min_length: 1),
+        "createdBy" => nonempty_string()
+      })
 
-  def update(conn, %{"id" => id} = question_params) do
-    question = QA.get_question!(id)
-
-    with {:ok, %Question{} = question} <- QA.update_question(question, question_params) do
-      render(conn, "show.json", question: question)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    question = QA.get_question!(id)
-
-    with {:ok, %Question{}} <- QA.delete_question(question) do
-      send_resp(conn, :no_content, "")
+    case type do
+      :create -> selection(s, ["text", "tags", "createdBy"])
+      :update -> selection(s, ["text", "tags"])
+      _ -> s
     end
   end
 end

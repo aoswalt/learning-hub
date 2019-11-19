@@ -27,10 +27,10 @@ defmodule HubWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Hub.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HubDB.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Hub.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(HubDB.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

@@ -1,23 +1,8 @@
 defmodule HubWeb.QuestionControllerTest do
-  use HubWeb.ConnCase
+  use HubWeb.ConnCase, async: true
 
-  alias Hub.QA
-  alias Hub.QA.Question
-
-  @create_attrs %{
-    tags: [],
-    text: "some text"
-  }
-  @update_attrs %{
-    tags: [],
-    text: "some updated text"
-  }
-  @invalid_attrs %{tags: nil, text: nil}
-
-  def fixture(:question) do
-    {:ok, question} = QA.create_question(@create_attrs)
-    question
-  end
+  alias HubDB.Question
+  alias HubWeb.Helpers.Question, as: QuestionHelpers
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -26,26 +11,41 @@ defmodule HubWeb.QuestionControllerTest do
   describe "index" do
     test "lists all questions", %{conn: conn} do
       conn = get(conn, Routes.question_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+      assert [] = json_response(conn, 200)
+
+      create_question()
+
+      conn = get(conn, Routes.question_path(conn, :index))
+      assert [_] = json_response(conn, 200)
+    end
+
+    test "filters by tags", %{conn: conn} do
+      conn = get(conn, Routes.question_path(conn, :index), %{"tags" => ["sql"]})
+      assert [] = json_response(conn, 200)
+
+      %{tags: [tag | _]} = QuestionHelpers.create()
+
+      conn = get(conn, Routes.question_path(conn, :index), %{"tags" => [tag]})
+      assert [_] = json_response(conn, 200)
+
+      conn = get(conn, Routes.question_path(conn, :index), %{"tags" => []})
+      assert [] = json_response(conn, 200)
     end
   end
 
   describe "create question" do
     test "renders question when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.question_path(conn, :create), question: @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
+      conn = post(conn, Routes.question_path(conn, :create), QuestionHelpers.gen_params(:create))
+      assert %{"id" => id} = json_response(conn, 201)
 
       conn = get(conn, Routes.question_path(conn, :show, id))
+      response = json_response(conn, 200)
 
-      assert %{
-               "id" => id,
-               "tags" => [],
-               "text" => "some text"
-             } = json_response(conn, 200)["data"]
+      assert Norm.conform!(response, HubWeb.QuestionController.resource_s())
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.question_path(conn, :create), question: @invalid_attrs)
+      conn = post(conn, Routes.question_path(conn, :create), QuestionHelpers.invalid_params(:create))
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -53,21 +53,28 @@ defmodule HubWeb.QuestionControllerTest do
   describe "update question" do
     setup [:create_question]
 
-    test "renders question when data is valid", %{conn: conn, question: %Question{id: id} = question} do
-      conn = put(conn, Routes.question_path(conn, :update, question), question: @update_attrs)
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
+    test "renders question when data is valid", %{
+      conn: conn,
+      question: %Question{id: id} = question
+    } do
+      update_params = QuestionHelpers.gen_params(:update)
 
-      conn = get(conn, Routes.question_path(conn, :show, id))
+      conn = put(conn, Routes.question_path(conn, :update, question), update_params)
+      assert %{"id" => ^id} = json_response(conn, 200)
 
-      assert %{
-               "id" => id,
-               "tags" => [],
-               "text" => "some updated text"
-             } = json_response(conn, 200)["data"]
+      response =
+        conn
+        |> get(Routes.question_path(conn, :show, id))
+        |> json_response(200)
+
+      assert Norm.conform!(response, HubWeb.QuestionController.resource_s())
+
+      assert %{"id" => ^id} = response
+      assert update_params = response
     end
 
     test "renders errors when data is invalid", %{conn: conn, question: question} do
-      conn = put(conn, Routes.question_path(conn, :update, question), question: @invalid_attrs)
+      conn = put(conn, Routes.question_path(conn, :update, question), QuestionHelpers.invalid_params(:update))
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -85,8 +92,7 @@ defmodule HubWeb.QuestionControllerTest do
     end
   end
 
-  defp create_question(_) do
-    question = fixture(:question)
-    {:ok, question: question}
+  defp create_question(_ \\ nil) do
+    {:ok, question: QuestionHelpers.create()}
   end
 end
