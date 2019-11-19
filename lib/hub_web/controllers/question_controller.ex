@@ -1,6 +1,7 @@
 defmodule HubWeb.QuestionController do
   use HubWeb.ResourceController, for: HubDB.Question, camelize?: true
 
+  import Hub.Spec
   import Norm
 
   alias HubDB.Question
@@ -33,22 +34,10 @@ defmodule HubWeb.QuestionController do
   def resource_s(type) do
     s =
       schema(%{
-        "id" => spec(is_integer() and (&(&1 > 0))),
-        "text" =>
-          with_gen(
-            spec(is_binary() and fn str -> String.length(str) > 0 end),
-            StreamData.string(:printable, min_length: 1)
-          ),
-        "tags" =>
-          with_gen(
-            spec(is_list() and fn tags -> Enum.all?(tags, &is_binary/1) end),
-            StreamData.list_of(StreamData.string(:printable, min_length: 1))
-          ),
-        "createdBy" =>
-          with_gen(
-            spec(is_binary() and fn str -> String.length(str) > 0 end),
-            StreamData.string(:printable, min_length: 1)
-          )
+        "id" => positive_integer(),
+        "text" => nonempty_string(),
+        "tags" => coll_of(nonempty_string(), min_length: 1),
+        "createdBy" => nonempty_string()
       })
 
     case type do

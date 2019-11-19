@@ -1,29 +1,18 @@
 defmodule HubWeb.AnswerController do
   use HubWeb.ResourceController, for: HubDB.Answer
 
+  import Hub.Spec
   import Norm
 
   @impl HubWeb.ResourceController
   def resource_s(type \\ nil) do
     s =
       schema(%{
-        "id" => spec(is_integer() and (&(&1 > 0))),
-        "questionId" => spec(is_integer() and (&(&1 > 0))),
-        "text" =>
-          with_gen(
-            spec(is_binary() and fn str -> String.length(str) > 0 end),
-            StreamData.string(:printable, min_length: 1)
-          ),
-        "createdBy" =>
-          with_gen(
-            spec(is_binary() and fn str -> String.length(str) > 0 end),
-            StreamData.string(:printable, min_length: 1)
-          ),
-        "createdAt" =>
-          with_gen(
-            spec(&match?(%NaiveDateTime{}, &1)),
-            HubDB.Spec.Generators.naive_datetime()
-          )
+        "id" => positive_integer(),
+        "questionId" => positive_integer(),
+        "text" => nonempty_string(),
+        "createdBy" => nonempty_string(),
+        "createdAt" => naive_datetime_string()
       })
 
     case type do
