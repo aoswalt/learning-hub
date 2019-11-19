@@ -26,3 +26,9 @@ GET /answers/1
 
 --
 GET /answers?question_id=3
+
+--
+GET /profiles
+
+--
+GET /profiles?cohort=16
