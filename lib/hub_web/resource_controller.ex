@@ -124,14 +124,13 @@ defmodule HubWeb.ResourceController do
       |> module.to_serializable()
       |> mapper.()
 
-    spec = module.resource_s()
-
-    # NOTE(adam): conform could be used directly if spec defined
-    if Norm.valid?(response, spec) do
-      response
-    else
+    if Kernel.function_exported?(module, :resource_s, 0) do
+      # NOTE(adam): specific handling of alts, etc are needed to directly use
+      # the result of conform
       Norm.conform!(response, module.resource_s())
     end
+
+    response
   end
 
   @callback index(Plug.Conn.t(), params :: map) :: Plug.Conn.t()
@@ -144,6 +143,8 @@ defmodule HubWeb.ResourceController do
   @callback serializable_fields() :: [atom]
   @callback resource_s() :: %Norm.Schema{}
   @callback resource_s(any) :: %Norm.Schema{}
+
+  @optional_callbacks resource_s: 0, resource_s: 1
 
   defmacro __using__(opts) do
     resource_module = Keyword.fetch!(opts, :for)
@@ -200,9 +201,6 @@ defmodule HubWeb.ResourceController do
 
       @impl Res
       def serializable_fields(), do: unquote(resource_module).__schema__(:fields)
-
-      @impl Res
-      def resource_s(_ \\ nil), do: Norm.schema(%{})
 
       defoverridable Res
     end
