@@ -1,6 +1,7 @@
 defmodule HubWeb.ResourceController do
+  use HubWeb, :controller
+
   import Ecto.Query
-  import Plug.Conn
 
   alias HubDB.Repo
 
@@ -77,23 +78,21 @@ defmodule HubWeb.ResourceController do
 
     path = apply(HubWeb.Router.Helpers, path_fun, [conn, :show, data])
 
-    # |> put_status(:created)
     conn
+    |> put_status(status)
     |> put_resp_header("location", path)
     |> put_resp_content_type("application/json")
-    |> send_resp(status, Jason.encode!(response_data))
+    |> json(response_data)
   end
 
-  def respond(data, conn, status, module) do
+  def respond(data, conn, _status, module) do
     response_data =
       case data do
         d when is_list(d) -> Enum.map(d, &convert_to_serializable(&1, module))
         d when is_map(d) -> convert_to_serializable(d, module)
       end
 
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(status, Jason.encode!(response_data))
+    json(conn, response_data)
   end
 
   def camelize(key) when is_atom(key) do
