@@ -31,7 +31,7 @@ defmodule HubWeb.QuestionController do
   # end
 
   @impl HubWeb.ResourceController
-  def resource_s(type) do
+  def resource_s(type \\ nil) do
     s =
       schema(%{
         "id" => positive_integer(),
