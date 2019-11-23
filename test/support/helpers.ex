@@ -1,61 +1,40 @@
 defmodule HubWeb.Helpers do
-  defmodule Question do
-    def create() do
-      {:ok, question} =
-        :create
-        |> gen_params()
-        |> Map.new(fn {k, v} -> {Phoenix.Naming.underscore(k), v} end)
-        |> Hub.create_question()
-
-      question
-    end
-
-    def gen_params(type) do
-      type
-      |> HubWeb.QuestionController.resource_s()
-      |> Norm.gen()
-      |> Enum.take(1)
-      |> List.first()
-    end
-
-    def invalid_params(type) do
-      params = gen_params(type)
-      bad_key = params |> Map.keys() |> Enum.random()
-
-      Map.put(params, bad_key, nil)
-    end
+  def take_one(%StreamData{} = data) do
+    data
+    |> Enum.take(1)
+    |> List.first()
   end
 
-  defmodule Answer do
-    def create(question_id) do
-      {:ok, answer} =
-        :create
-        |> gen_params(question_id)
-        |> Map.new(fn {k, v} -> {Phoenix.Naming.underscore(k), v} end)
-        |> Hub.create_answer()
+  def take_one(generatable) do
+    generatable
+    |> Norm.gen()
+    |> take_one()
+  end
 
-      answer
-    end
+  def with_nil_param(params) do
+    bad_key = params |> Map.keys() |> Enum.random()
 
-    def gen_params(type, question_id \\ nil) do
-      params = type
-      |> HubWeb.AnswerController.resource_s()
-      |> Norm.gen()
-      |> Enum.take(1)
-      |> List.first()
+    Map.put(params, bad_key, nil)
+  end
 
-      if question_id do
-        Map.put(params, "question_id", question_id)
-      else
-        params
-      end
-    end
+  def gen_params(ctrl, type \\ nil, set_params \\ %{}) do
+    type
+    |> ctrl.resource_s()
+    |> take_one()
+    |> Map.merge(set_params)
+  end
 
-    def invalid_params(type) do
-      params = gen_params(type, 1)
-      bad_key = params |> Map.keys() |> Enum.random()
+  # TODO(adam): this should be moved in favor of genearting directly by resource
+  def create_by_ctrl(ctrl, set_params \\ %{}) do
+    resource_module = ctrl.__resource__()
 
-      Map.put(params, bad_key, nil)
-    end
+    params =
+      ctrl
+      |> HubWeb.Helpers.gen_params(:create, set_params)
+      |> Map.new(fn {k, v} -> {Phoenix.Naming.underscore(k), v} end)
+
+    struct(resource_module)
+    |> resource_module.changeset(params)
+    |> HubDB.Repo.insert!()
   end
 end
