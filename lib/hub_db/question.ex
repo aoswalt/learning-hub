@@ -16,6 +16,16 @@ defmodule HubDB.Question do
     timestamps()
   end
 
+  def s() do
+    Hub.Spec.from_ecto_schema(__MODULE__)
+  end
+
+  def new(params) do
+    struct(__MODULE__)
+    |> changeset(params)
+    |> apply_action(:insert)
+  end
+
   @doc false
   def changeset(question, attrs) do
     question

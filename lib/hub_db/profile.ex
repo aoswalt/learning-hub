@@ -15,6 +15,10 @@ defmodule HubDB.Profile do
     timestamps()
   end
 
+  def s() do
+    Hub.Spec.from_ecto_schema(__MODULE__)
+  end
+
   @doc false
   def changeset(profile, attrs) do
     profile

@@ -13,6 +13,10 @@ defmodule HubDB.Answer do
     timestamps()
   end
 
+  def s() do
+    Hub.Spec.from_ecto_schema(__MODULE__)
+  end
+
   @doc false
   def changeset(question, attrs) do
     question
