@@ -201,6 +201,20 @@ defmodule HubWeb.ResourceController do
       @impl Res
       def serializable_fields(), do: unquote(resource_module).__schema__(:fields)
 
+      resource_name = Phoenix.Naming.resource_name(unquote(resource_module))
+
+      defdelegate path(conn_or_endpoint, action),
+        to: Routes,
+        as: String.to_atom(resource_name <> "_path")
+
+      defdelegate path(conn_or_endpoint, action, params),
+        to: Routes,
+        as: String.to_atom(resource_name <> "_path")
+
+      defdelegate path(conn_or_endpoint, action, id, params),
+        to: Routes,
+        as: String.to_atom(resource_name <> "_path")
+
       defoverridable Res
     end
   end
