@@ -1,5 +1,5 @@
-defmodule HubWeb.QuestionController do
-  use HubWeb.ResourceController, for: HubDB.Question, camelize?: true
+defmodule HubJSON.QuestionController do
+  use HubJSON.ResourceController, for: HubDB.Question, camelize?: true
 
   import Hub.Spec
   import Norm
@@ -8,7 +8,7 @@ defmodule HubWeb.QuestionController do
 
   # 2-arity - query, params
   # nil is non-filterable
-  @impl HubWeb.ResourceController
+  @impl HubJSON.ResourceController
   def filter_overrides(), do: %{
     "tags" => &Question.where_has_tags(&1, &2)
   }
@@ -16,7 +16,7 @@ defmodule HubWeb.QuestionController do
   # filter "tags", &Question.where_has_tags(&1, &2)
   # param "tags", &Question.where_has_tags(&1, &2)
 
-  @impl HubWeb.ResourceController
+  @impl HubJSON.ResourceController
   def resource_s(type \\ nil) do
     s =
       schema(%{

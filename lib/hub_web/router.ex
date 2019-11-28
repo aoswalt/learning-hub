@@ -21,7 +21,7 @@ defmodule HubWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  scope "/api", HubWeb do
+  scope "/api", HubJSON do
     pipe_through :api
 
     resources "/questions", QuestionController, except: [:new, :edit]

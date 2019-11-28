@@ -1,13 +1,13 @@
-defmodule HubWeb.ProfileController do
-  use HubWeb.ResourceController, for: HubDB.Profile, camelize?: true
+defmodule HubJSON.ProfileController do
+  use HubJSON.ResourceController, for: HubDB.Profile, camelize?: true
 
   import Hub.Spec
   import Norm
 
-  @impl HubWeb.ResourceController
+  @impl HubJSON.ResourceController
   def serializable_fields(), do: [:id, :name, :cohort, :tags, :bio, :user_id]
 
-  @impl HubWeb.ResourceController
+  @impl HubJSON.ResourceController
   def resource_s(type \\ nil) do
     spec = schema(%{
       "id" => positive_integer(),

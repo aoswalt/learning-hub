@@ -1,5 +1,5 @@
-defmodule HubWeb.ResourceController do
-  use HubWeb, :controller
+defmodule HubJSON.ResourceController do
+  use HubJSON, :controller
 
   import Ecto.Query
 
@@ -81,7 +81,6 @@ defmodule HubWeb.ResourceController do
     conn
     |> put_status(status)
     |> put_resp_header("location", path)
-    |> put_resp_content_type("application/json")
     |> json(response_data)
   end
 
@@ -150,14 +149,14 @@ defmodule HubWeb.ResourceController do
     alias __MODULE__, as: Res
 
     quote do
-      use Phoenix.Controller, namespace: HubWeb
+      use Phoenix.Controller, namespace: HubJSON
 
       import Plug.Conn
       import HubWeb.Gettext
 
       alias HubWeb.Router.Helpers, as: Routes
 
-      action_fallback HubWeb.FallbackController
+      action_fallback HubJSON.FallbackController
 
       @behaviour Res
 

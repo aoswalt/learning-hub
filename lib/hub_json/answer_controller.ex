@@ -1,10 +1,10 @@
-defmodule HubWeb.AnswerController do
-  use HubWeb.ResourceController, for: HubDB.Answer
+defmodule HubJSON.AnswerController do
+  use HubJSON.ResourceController, for: HubDB.Answer
 
   import Hub.Spec
   import Norm
 
-  @impl HubWeb.ResourceController
+  @impl HubJSON.ResourceController
   def resource_s(type \\ nil) do
     s =
       schema(%{
@@ -22,7 +22,7 @@ defmodule HubWeb.AnswerController do
     end
   end
 
-  @impl HubWeb.ResourceController
+  @impl HubJSON.ResourceController
   def to_serializable(answer) do
     %{
       "id" => answer.id,

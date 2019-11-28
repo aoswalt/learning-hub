@@ -1,5 +1,5 @@
-defmodule HubWeb.AnswerControllerTest do
-  use HubWeb.ResourceControllerTest, ctrl: HubWeb.AnswerController
+defmodule HubJSON.AnswerControllerTest do
+  use HubJSON.ResourceControllerTest, ctrl: HubJSON.AnswerController
 
   defp resource(_) do
     question = HubWeb.Helpers.gen_resource(HubDB.Question)
@@ -8,6 +8,6 @@ defmodule HubWeb.AnswerControllerTest do
 
   defp create_params(_) do
     question = HubWeb.Helpers.gen_resource(HubDB.Question)
-    [create_params: gen_params(HubWeb.AnswerController, :create, %{question_id: question.id})]
+    [create_params: gen_params(HubJSON.AnswerController, :create, %{question_id: question.id})]
   end
 end

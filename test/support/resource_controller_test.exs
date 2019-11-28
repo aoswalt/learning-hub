@@ -1,4 +1,4 @@
-defmodule HubWeb.ResourceControllerTest do
+defmodule HubJSON.ResourceControllerTest do
   defmacro __using__(opts) do
     ctrl = Keyword.fetch!(opts, :ctrl)
 

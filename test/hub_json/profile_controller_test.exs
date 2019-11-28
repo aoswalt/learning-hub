@@ -1,5 +1,5 @@
-defmodule HubWeb.ProfileControllerTest do
-  use HubWeb.ResourceControllerTest, ctrl: HubWeb.ProfileController
+defmodule HubJSON.ProfileControllerTest do
+  use HubJSON.ResourceControllerTest, ctrl: HubJSON.ProfileController
 
   defp resource(_) do
     user = HubWeb.Helpers.gen_resource(HubDB.User)
