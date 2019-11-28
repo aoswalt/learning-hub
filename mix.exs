@@ -33,6 +33,7 @@ defmodule Hub.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:ecto_enum, "~> 1.4"},
       {:cors_plug, "~> 2.0"},
       {:ecto_sql, "~> 3.1"},
       {:gettext, "~> 0.11"},

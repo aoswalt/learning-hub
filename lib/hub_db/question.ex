@@ -3,11 +3,11 @@ defmodule HubDB.Question do
 
   import Ecto.{Changeset, Query}
 
-  alias HubDB.{Answer, User}
+  alias HubDB.{Answer, Tag, User}
   alias __MODULE__
 
   schema "questions" do
-    field :tags, {:array, :string}
+    field :tags, {:array, Tag}
     field :text, :string
     belongs_to :created_by_user, User, foreign_key: :created_by, type: :string
     belongs_to :solution, Answer
@@ -18,10 +18,7 @@ defmodule HubDB.Question do
 
   def s(type \\ nil) do
     spec =
-      Hub.Spec.from_ecto_schema(
-        __MODULE__,
-        %{tags: Norm.coll_of(Hub.Spec.nonempty_string(), min_count: 1)}
-      )
+      Hub.Spec.from_ecto_schema(__MODULE__, %{tags: Norm.coll_of(Hub.Spec.tag(), min_count: 1)})
 
     case type do
       :new -> Norm.selection(spec, [:tags, :text, :created_by])

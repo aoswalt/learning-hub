@@ -13,7 +13,7 @@ defmodule HubWeb.ProfileController do
       "id" => positive_integer(),
       "name" => nonempty_string(),
       "cohort" => nonempty_string(),
-      "tags" => coll_of(nonempty_string(), min_count: 1),
+      "tags" => coll_of(tag(), min_count: 1),
       "bio" => nonempty_string(),
       "userId" => nonempty_string()
     })

@@ -2,6 +2,7 @@ defmodule Hub.Spec do
   import Norm
 
   alias Hub.Spec.Generators
+  alias HubDB.Tag
 
   def positive_integer() do
     spec(is_integer() and (&(&1 > 0)))
@@ -54,6 +55,13 @@ defmodule Hub.Spec do
     )
   end
 
+  def tag() do
+    with_gen(
+      spec(&Tag.valid_value?/1),
+      Tag.__valid_values__() |> Enum.map(&StreamData.constant/1) |> StreamData.one_of()
+    )
+  end
+
   def from_ecto_schema(module, set_specs \\ %{}) do
     module.__schema__(:fields)
     |> Enum.map(&{&1, module.__schema__(:type, &1)})
@@ -83,6 +91,7 @@ defmodule Hub.Spec do
       :naive_datetime_usec -> naive_datetime()
       :utc_datetime -> datetime()
       :utc_datetime_usec -> datetime()
+      Tag -> tag()
     end
   end
 end

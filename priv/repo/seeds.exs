@@ -79,65 +79,6 @@ answers =
   ]
   |> Enum.shuffle()
 
-tags = %{
-  ajax: "Ajax",
-  android: "Android",
-  angular: "Angular",
-  angularjs: "AngularJS",
-  arrays: "Arrays",
-  asp_dotnet: "ASP.NET",
-  asp_dotnet_mvc: "ASP.NET MVC",
-  bash: "Bash",
-  c: "C",
-  c_sharp: "C#",
-  cpp: "C++",
-  css: "CSS",
-  database: "Database",
-  django: "Django",
-  dotnet: ".NET",
-  eclipse: "Eclipse",
-  elixir: "Elixir",
-  excel: "Excel",
-  git: "Git",
-  html: "HTML",
-  ios: "IOS",
-  iphone: "iPhone",
-  java: "Java",
-  javascript: "JavaScript",
-  jquery: "jQuery",
-  json: "JSON",
-  laravel: "Laravel",
-  linux: "Linux",
-  mongodb: "MongoDB",
-  multithreading: "Multithreading",
-  mysql: "MYSQL",
-  node: "Node.js",
-  objective_c: "Objective C",
-  oracle: "Oracle",
-  pandas: "Pandas",
-  php: "PHP",
-  postgresql: "Postgresql",
-  python: "Python",
-  r: "R",
-  react: "Reactjs",
-  regex: "Regex",
-  ruby: "Ruby",
-  rails: "Ruby On Rails",
-  spring: "Spring",
-  sql: "SQL",
-  sql_server: "SQL Server",
-  string: "String",
-  swift: "Swift",
-  vb_dotnet: "VB.NET",
-  vba: "VBA",
-  vim: "vim",
-  windows: "Windows",
-  wordpress: "Wordpress",
-  wpf: "WPF",
-  xcode: "Xcode",
-  xml: "XML"
-}
-
 get_weighted = fn options ->
   Enum.reduce_while(options, :random.uniform(), fn {element, chance}, num ->
     remaining = num - chance
@@ -161,8 +102,8 @@ end
 get_random_tags = fn max ->
   0..:random.uniform(max)
   |> Enum.map(fn _ ->
-    tags
-    |> Map.keys()
+    HubDB.Tag.__enum_map__()
+    |> Keyword.keys()
     |> Enum.random()
     |> Atom.to_string()
   end)

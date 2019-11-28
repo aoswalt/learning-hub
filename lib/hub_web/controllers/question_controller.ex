@@ -22,7 +22,7 @@ defmodule HubWeb.QuestionController do
       schema(%{
         "id" => positive_integer(),
         "text" => nonempty_string(),
-        "tags" => coll_of(nonempty_string(), min_count: 1),
+        "tags" => coll_of(tag(), min_count: 1),
         "createdBy" => nonempty_string()
       })
 

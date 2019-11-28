@@ -9,7 +9,7 @@ defmodule HubWeb.QuestionControllerTest do
 
       %{tags: [tag | _]} = HubWeb.Helpers.gen_resource(HubWeb.QuestionController.__resource__())
 
-      conn = get(conn, Routes.question_path(conn, :index), %{"tags" => [tag]})
+      conn = get(conn, Routes.question_path(conn, :index), %{"tags" => [Atom.to_string(tag)]})
       assert [_] = json_response(conn, 200)
 
       conn = get(conn, Routes.question_path(conn, :index), %{"tags" => []})

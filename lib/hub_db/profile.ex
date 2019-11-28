@@ -3,12 +3,13 @@ defmodule HubDB.Profile do
 
   import Ecto.Changeset
 
+  alias HubDB.Tag
   alias HubDB.User
 
   schema "profiles" do
     field :name, :string
     field :cohort, :string
-    field :tags, {:array, :string}
+    field :tags, {:array, Tag}
     field :bio, :string
     belongs_to :user, User, type: :string
 
@@ -18,7 +19,7 @@ defmodule HubDB.Profile do
   def s(type \\ nil) do
     spec =
       Hub.Spec.from_ecto_schema(__MODULE__, %{
-        tags: Norm.coll_of(Hub.Spec.nonempty_string(), min_count: 1)
+        tags: Norm.coll_of(Hub.Spec.tag(), min_count: 1)
       })
 
     case type do
