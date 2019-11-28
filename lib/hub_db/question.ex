@@ -16,8 +16,17 @@ defmodule HubDB.Question do
     timestamps()
   end
 
-  def s() do
-    Hub.Spec.from_ecto_schema(__MODULE__)
+  def s(type \\ nil) do
+    spec =
+      Hub.Spec.from_ecto_schema(
+        __MODULE__,
+        %{tags: Norm.coll_of(Hub.Spec.nonempty_string(), min_count: 1)}
+      )
+
+    case type do
+      :new -> Norm.selection(spec, [:tags, :text, :created_by])
+      _ -> spec
+    end
   end
 
   def new(params) do
@@ -32,6 +41,7 @@ defmodule HubDB.Question do
     |> cast(attrs, [:text, :tags, :created_by, :solution_id])
     |> validate_required([:text, :tags, :created_by])
     |> assoc_constraint(:created_by_user)
+    |> assoc_constraint(:solution)
   end
 
   def solve(question, answer_id) do

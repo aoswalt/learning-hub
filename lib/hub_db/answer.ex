@@ -13,8 +13,13 @@ defmodule HubDB.Answer do
     timestamps()
   end
 
-  def s() do
-    Hub.Spec.from_ecto_schema(__MODULE__)
+  def s(type \\ nil) do
+    spec = Hub.Spec.from_ecto_schema(__MODULE__)
+
+    case type do
+      :new -> Norm.selection(spec, [:text, :created_by])
+      _ -> spec
+    end
   end
 
   @doc false
