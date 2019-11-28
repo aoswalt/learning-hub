@@ -24,17 +24,24 @@ defmodule HubWeb.Helpers do
     |> Map.merge(set_params)
   end
 
-  # TODO(adam): this should be moved in favor of genearting directly by resource
-  def create_by_ctrl(ctrl, set_params \\ %{}) do
-    resource_module = ctrl.__resource__()
-
+  def gen_resource(module, set_params \\ %{}) do
     params =
-      ctrl
-      |> HubWeb.Helpers.gen_params(:create, set_params)
-      |> Map.new(fn {k, v} -> {Phoenix.Naming.underscore(k), v} end)
+      module.s(:new)
+      |> take_one()
+      |> case do
+        %_{} = s -> Map.from_struct(s)
+        m -> m
+      end
+      |> Map.merge(set_params)
 
-    struct(resource_module)
-    |> resource_module.changeset(params)
+    changeset_fun =
+      if Kernel.function_exported?(module, :changeset, 2),
+        do: &module.changeset(&1, &2),
+        else: &Ecto.Changeset.cast(&1, &2, module.__schema__(:fields))
+
+    module
+    |> struct()
+    |> changeset_fun.(params)
     |> HubDB.Repo.insert!()
   end
 end

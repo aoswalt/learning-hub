@@ -10,6 +10,8 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+alias HubDB.Repo
+
 names =
   [
     "Adam",
@@ -229,8 +231,8 @@ answered_questions
 |> Enum.reject(fn _ -> :random.uniform() < 0.2 end)
 |> Enum.map(fn {q_id, ans_list} -> {q_id, List.first(ans_list)} end)
 |> Enum.map(fn {q_id, ans} ->
-  q_id
-  |> Hub.get_question!()
+  HubDB.Question
+  |> Repo.get!(q_id)
   |> Hub.update_question(%{solution_id: ans.id})
 end)
 |> Enum.map(unpack_result)

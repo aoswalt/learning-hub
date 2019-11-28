@@ -16,20 +16,6 @@ defmodule HubWeb.QuestionController do
   # filter "tags", &Question.where_has_tags(&1, &2)
   # param "tags", &Question.where_has_tags(&1, &2)
 
-  # one of serializable_fields, to_serializable, or derive Jason
-  # or camelize?: true
-  # def serializable_fields(), do: [:id, :text, :tags, :created_by]
-
-  # @impl ResourceController
-  # def to_serializable(question) do
-  #   %{
-  #     "id" => question.id,
-  #     "text" => question.text,
-  #     "tags" => question.tags,
-  #     "createdBy" => question.created_by
-  #   }
-  # end
-
   @impl HubWeb.ResourceController
   def resource_s(type \\ nil) do
     s =
