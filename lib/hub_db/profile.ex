@@ -16,7 +16,10 @@ defmodule HubDB.Profile do
   end
 
   def s(type \\ nil) do
-    spec = Hub.Spec.from_ecto_schema(__MODULE__)
+    spec =
+      Hub.Spec.from_ecto_schema(__MODULE__, %{
+        tags: Norm.coll_of(Hub.Spec.nonempty_string(), min_count: 1)
+      })
 
     case type do
       :new -> Norm.selection(spec, [:name, :cohort, :tags, :bio])
