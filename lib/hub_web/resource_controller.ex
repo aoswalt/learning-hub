@@ -124,12 +124,10 @@ defmodule HubWeb.ResourceController do
       |> mapper.()
 
     if Kernel.function_exported?(module, :resource_s, 0) do
-      # NOTE(adam): specific handling of alts, etc are needed to directly use
-      # the result of conform
       Norm.conform!(response, module.resource_s())
+    else
+      response
     end
-
-    response
   end
 
   @callback index(Plug.Conn.t(), params :: map) :: Plug.Conn.t()

@@ -46,11 +46,10 @@ defmodule Hub.Spec do
   # NOTE(adam): accpets either string or raw NaiveDateTime to account for controller serialization
   def naive_datetime_string() do
     with_gen(
-      alt(
-        raw: spec(&match?(%NaiveDateTime{}, &1)),
-        string:
-          spec(is_binary() and (&match?({:ok, %NaiveDateTime{}}, NaiveDateTime.from_iso8601(&1))))
-      ),
+      one_of([
+        spec(&match?(%NaiveDateTime{}, &1)),
+        spec(is_binary() and (&match?({:ok, %NaiveDateTime{}}, NaiveDateTime.from_iso8601(&1))))
+      ]),
       Generators.naive_datetime_string()
     )
   end
