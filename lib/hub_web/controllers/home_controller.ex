@@ -1,4 +1,4 @@
-defmodule HubWeb.PageController do
+defmodule HubWeb.HomeController do
   use HubWeb, :controller
 
   def index(conn, _params) do

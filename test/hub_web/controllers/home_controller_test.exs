@@ -1,4 +1,4 @@
-defmodule HubWeb.PageControllerTest do
+defmodule HubWeb.HomeControllerTest do
   use HubWeb.ConnCase
 
   test "GET /", %{conn: conn} do
