@@ -1,7 +1,7 @@
 defmodule HubWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :hub
 
-  socket "/socket", HubWeb.UserSocket,
+  socket "/socket", HubHTML.UserSocket,
     websocket: true,
     longpoll: false
 

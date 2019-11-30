@@ -14,7 +14,7 @@ defmodule HubWeb.Router do
     plug :parseltongue
   end
 
-  scope "/", HubWeb do
+  scope "/", HubHTML do
     pipe_through :browser
 
     get "/", HomeController, :index

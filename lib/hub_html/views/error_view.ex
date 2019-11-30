@@ -1,5 +1,5 @@
-defmodule HubWeb.ErrorView do
-  use HubWeb, :view
+defmodule HubHTML.ErrorView do
+  use HubHTML, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

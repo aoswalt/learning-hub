@@ -1,5 +1,5 @@
-defmodule HubWeb.HomeController do
-  use HubWeb, :controller
+defmodule HubHTML.HomeController do
+  use HubHTML, :controller
 
   def index(conn, _params) do
     render(conn, "index.html")
