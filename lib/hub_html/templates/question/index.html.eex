@@ -1,0 +1,16 @@
+<%= shared :cards do %>
+  <%= for question <- @questions do %>
+    <%= shared :card do %>
+      <div>
+        <%= link to: Routes.question_path(@conn, :show, question) do %>
+          <p><%= question.text %></p>
+        <%= end %>
+        <%= tags question.tags %>
+        </ul>
+      </div>
+      <%= if question.solution_id do %>
+        <span class="solved" />
+      <%= end %>
+    <%= end %>
+  <%= end %>
+<%= end %>

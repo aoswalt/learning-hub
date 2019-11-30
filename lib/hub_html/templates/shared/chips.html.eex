@@ -1,0 +1,10 @@
+<ul class="chips">
+  <%= for {value, label} <- @values do %>
+    <li>
+      <%= label %>
+      <%= if assigns[:deletable?] do %>
+        <span class="close" />
+      <%= end %>
+    </li>
+  <%= end %>
+</ul>

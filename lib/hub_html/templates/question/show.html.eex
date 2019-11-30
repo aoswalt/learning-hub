@@ -1,0 +1,30 @@
+<%= shared :cards do %>
+  <%= shared :card do %>
+    <div>
+      <p><%= @question.text %></p>
+      <%= tags @question.tags %>
+    </div>
+    <%= if @question.solution_id do %>
+      <span class="solved" />
+    <%= end %>
+  <%= end %>
+<%= end %>
+
+<%= if @question.solution do %>
+  <%= shared :cards do %>
+    <%= shared :card do %>
+      <span class="solved" />
+      <div>
+        <p><%= @question.solution.text %></p>
+      </div>
+    <%= end %>
+  <%= end %>
+<%= end %>
+
+<%= shared :cards do %>
+  <%= for answer <- @remaining_answers do %>
+    <%= shared :card do %>
+      <p>answer.text</p>
+    <%= end %>
+  <%= end %>
+<%= end %>

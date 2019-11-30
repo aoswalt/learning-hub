@@ -37,6 +37,7 @@ defmodule HubHTML do
         root: "lib/hub_html/templates",
         namespace: HubHTML
 
+      import HubHTML.ViewHelpers
       import HubWeb.ErrorHelpers
       import HubWeb.Gettext
       import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]

@@ -1,0 +1,3 @@
+<section class="cards">
+  <%= assigns[:do] %>
+</section>

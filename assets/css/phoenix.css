@@ -141,6 +141,26 @@ header nav a {
   cursor: pointer;
 }
 
+.card {
+  padding: 1rem;
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cards > .card {
+  margin-bottom: 1.5rem;
+}
+
+.card .chips {
+  margin-bottom: 0;
+}
+
+.solved::after {
+  content: "x";
+}
+
+
 @media (min-width: 40.0rem) { /* Small devices (landscape phones, 576px and up) */
   header section {
     flex-direction: row;

@@ -2,11 +2,7 @@
   <label for="prompt"><%= gettext("What do you want to learn about?") %></label>
   <input type="text" id="prompt" />
 
-  <ul class="chips">
-    <li>CSS</li>
-    <li>HTML</li>
-    <li>Elixir</li>
-  </ul>
+  <%= tags [css: "CSS", html: "HTML", elixir: "Elixir"] %>
   </main>
 
 </section>
